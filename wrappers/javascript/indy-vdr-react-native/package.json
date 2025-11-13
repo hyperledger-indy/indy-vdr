@@ -41,7 +41,7 @@
     "install": "node scripts/install.js"
   },
   "dependencies": {
-    "@hyperledger/indy-vdr-shared": "0.2.2"
+    "@hyperledger/indy-vdr-shared": "0.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
