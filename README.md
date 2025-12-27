@@ -1,8 +1,8 @@
 # Indy-VDR (Verifiable Data Registry)
 
-[<img src="https://raw.githubusercontent.com/hyperledger/indy-node/master/collateral/logos/indy-logo.png" width="50%" height="auto">](https://github.com/hyperledger/indy-sdk/)
+[<img src="https://raw.githubusercontent.com/hyperledger-indy/indy-node/master/collateral/logos/indy-logo.png" width="50%" height="auto">](https://github.com/hyperledger-indy/indy-sdk/)
 
-[![Unit Tests](https://github.com/hyperledger/indy-vdr/workflows/Unit%20Tests/badge.svg)](https://github.com/hyperledger/indy-vdr/actions)
+[![Unit Tests](https://github.com/hyperledger-indy/indy-vdr/workflows/Unit%20Tests/badge.svg)](https://github.com/hyperledger-indy/indy-vdr/actions)
 [![Python Package](https://img.shields.io/pypi/v/indy-vdr.svg)](https://pypi.org/project/indy-vdr/)
 
 - [Introduction](#introduction)
@@ -16,7 +16,7 @@
 
 ## Introduction
 
-This library is derived from [Hyperledger Indy SDK](https://github.com/hyperledger/indy-sdk) for the more limited use case of connecting to an [Indy Node](https://github.com/hyperledger/indy-node) blockchain ledger. It is written in Rust and currently includes a Python wrapper and a standalone proxy server.
+This library is derived from [Hyperledger Indy SDK](https://github.com/hyperledger-indy/indy-sdk) for the more limited use case of connecting to an [Indy Node](https://github.com/hyperledger-indy/indy-node) blockchain ledger. It is written in Rust and currently includes a Python wrapper and a standalone proxy server.
 
 _This library is still in development and there are currently no standard release packages._
 
@@ -90,7 +90,7 @@ Indy VDR contains a DID Resolver to resolve DIDs and dereference DID Urls to led
 
 ## Connecting to a Ledger
 
-Whether using the library or the proxy server, you will need a `genesis.txn` file containing the set of pool genesis transactions. You can run a local pool in Docker using [VON-Network](https://github.com/bcgov/von-network) or follow the [Indy-SDK instructions](https://github.com/hyperledger/indy-sdk#how-to-start-local-nodes-pool-with-docker).
+Whether using the library or the proxy server, you will need a `genesis.txn` file containing the set of pool genesis transactions. You can run a local pool in Docker using [VON-Network](https://github.com/bcgov/von-network) or follow the [Indy-SDK instructions](https://github.com/hyperledger-indy/indy-sdk#how-to-start-local-nodes-pool-with-docker).
 
 However the library is used, the `RUST_LOG` environment variable may be set in order to adjust the volume of logging messages produced. Acceptable values are `error`, `warn`, `info`, `debug`, and `trace`. The `RUST_BACKTRACE` environment variable may also be set to `full` for extended output in the case of fatal errors.
 
@@ -108,4 +108,4 @@ The following environment variables can be used to configure indy-vdr behavior:
 - Join us on the Hyperledger Discord. Guidance at [chat.hyperledger.org](https://chat.hyperledger.org).
 - Developer certificate of origin (DCO) are required in all Hyperledger repositories,
   so to get your pull requests accepted, you must certify your commits by signing off on each commit.
-  More information can be found in [Signing Commits](https://github.com/hyperledger/indy-sdk/docs/contributors/signing-commits.md) article.
+  More information can be found in [Signing Commits](https://github.com/hyperledger-indy/indy-sdk/docs/contributors/signing-commits.md) article.

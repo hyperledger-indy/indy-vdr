@@ -9,7 +9,7 @@ edition = "2021"
 rust-version = "1.85"
 license = "Apache-2.0"
 readme = "../README.md"
-repository = "https://github.com/hyperledger/indy-vdr/"
+repository = "https://github.com/hyperledger-indy/indy-vdr/"
 categories = ["authentication", "cryptography"]
 keywords = ["hyperledger", "indy", "ssi", "verifiable", "credentials"]
 

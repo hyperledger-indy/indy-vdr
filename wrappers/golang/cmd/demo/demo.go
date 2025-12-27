@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/hyperledger/indy-vdr/wrappers/golang/crypto"
-	"github.com/hyperledger/indy-vdr/wrappers/golang/identifiers"
-	"github.com/hyperledger/indy-vdr/wrappers/golang/vdr"
+	"github.com/hyperledger-indy/indy-vdr/wrappers/golang/crypto"
+	"github.com/hyperledger-indy/indy-vdr/wrappers/golang/identifiers"
+	"github.com/hyperledger-indy/indy-vdr/wrappers/golang/vdr"
 	"github.com/mr-tron/base58"
 )
 

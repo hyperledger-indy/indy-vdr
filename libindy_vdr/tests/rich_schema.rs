@@ -437,10 +437,10 @@ mod rs_chain {
                 },
                 "algorithm": {
                     "description": "This encoding transforms an RFC3339 - formatted datetime object into the number of seconds since January 1, 1970(the Unix epoch).",
-                    "documentation": "https://github.com/hyperledger/indy-hipe/commit/3a39665fd384254f08316eef6230c2f411b8f765",
-                    "implementation": "https://github.com/hyperledger/indy-hipe/commit/3a39665fd384254f08316eef6230c2f411b8f869",
+                    "documentation": "https://github.com/hyperledger-indy/indy-hipe/commit/3a39665fd384254f08316eef6230c2f411b8f765",
+                    "implementation": "https://github.com/hyperledger-indy/indy-hipe/commit/3a39665fd384254f08316eef6230c2f411b8f869",
                 },
-                "testVectors": "https://github.com/hyperledger/indy-hipe/commit/3a39665fd384254f08316eef6230c2f411b8f766"
+                "testVectors": "https://github.com/hyperledger-indy/indy-hipe/commit/3a39665fd384254f08316eef6230c2f411b8f766"
             });
             return RSContent(json_c.to_string());
         }

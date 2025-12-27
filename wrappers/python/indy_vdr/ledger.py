@@ -1095,8 +1095,8 @@ def build_auth_rule_request(
                 'auth_constraints': [<constraint_1>, <constraint_2>]
             }
 
-        Default ledger auth rules: https://github.com/hyperledger/indy-node/blob/master/docs/source/auth_rules.md
-        More about AUTH_RULE request: https://github.com/hyperledger/indy-node/blob/master/docs/source/requests.md#auth_rule
+        Default ledger auth rules: https://github.com/hyperledger-indy/indy-node/blob/master/docs/source/auth_rules.md
+        More about AUTH_RULE request: https://github.com/hyperledger-indy/indy-node/blob/master/docs/source/requests.md#auth_rule
     """
     handle = RequestHandle()
     submitter_did_p = encode_str(submitter_did)
@@ -1147,8 +1147,8 @@ def build_auth_rules_request(
             }
         ]
 
-        Default ledger auth rules: https://github.com/hyperledger/indy-node/blob/master/docs/source/auth_rules.md
-        More about AUTH_RULE request: https://github.com/hyperledger/indy-node/blob/master/docs/source/requests.md#auth_rules
+        Default ledger auth rules: https://github.com/hyperledger-indy/indy-node/blob/master/docs/source/auth_rules.md
+        More about AUTH_RULE request: https://github.com/hyperledger-indy/indy-node/blob/master/docs/source/requests.md#auth_rules
     """
     handle = RequestHandle()
     submitter_did_p = encode_str(submitter_did)

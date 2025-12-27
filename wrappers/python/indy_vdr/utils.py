@@ -5,7 +5,7 @@ import urllib.error
 import json
 
 INDY_NETWORKS_GITHUB_RAW_BASE = (
-    "https://raw.githubusercontent.com/hyperledger/indy-node-monitor/main/fetch-validator-status/networks.json"
+    "https://raw.githubusercontent.com/hyperledger-indy/indy-node-monitor/main/fetch-validator-status/networks.json"
 )
 GENESIS_FILENAME = "pool_transactions_genesis.json"
 

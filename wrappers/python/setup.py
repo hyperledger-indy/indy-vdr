@@ -14,7 +14,7 @@ if __name__ == "__main__":
         version=VERSION,
         author="Hyperledger Indy Contributors",
         author_email="indy@lists.hyperledger.org",
-        url="https://github.com/hyperledger/indy-vdr",
+        url="https://github.com/hyperledger-indy/indy-vdr",
         packages=find_packages(),
         include_package_data=True,
         package_data={

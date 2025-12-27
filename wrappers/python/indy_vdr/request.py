@@ -48,8 +48,8 @@ class Request:
         property must be set in order to generate a valid signature.
         Note: Both Transaction Author and Endorser must sign the output request.
         More about Transaction Endorser:
-            https://github.com/hyperledger/indy-node/blob/master/design/transaction_endorser.md
-            https://github.com/hyperledger/indy-sdk/blob/master/docs/configuration.md
+            https://github.com/hyperledger-indy/indy-node/blob/master/design/transaction_endorser.md
+            https://github.com/hyperledger-indy/indy-sdk/blob/master/docs/configuration.md
 
         Args:
             endorser_did: DID of the Endorser that will submit the transaction.

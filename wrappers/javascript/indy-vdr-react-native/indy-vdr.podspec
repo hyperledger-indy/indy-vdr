@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => "12.0" }
-  s.source       = { :git => "https://github.com/hyperledger/indy-vdr", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/hyperledger-indy/indy-vdr", :tag => "#{s.version}" }
 
   s.header_mappings_dir = "cpp"
 
