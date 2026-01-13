@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
@@ -141,7 +141,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
@@ -172,7 +172,7 @@ jobs:
           cargo build --lib --release --target ${{ matrix.target }}
 
       - name: Upload library artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: library-${{ matrix.architecture }}
           path: target/${{ matrix.target }}/release/${{ matrix.lib }}
@@ -211,15 +211,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: "Use Golang 1.16.x+"
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: "^1.16.0"
 
       - name: Fetch library artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: library-linux-x86_64
 
@@ -239,10 +239,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node.JS 20.x
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20.x
           registry-url: "https://registry.npmjs.org/"
@@ -254,7 +254,7 @@ jobs:
         run: yarn set version 4.9.2
 
       - name: Fetch library artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: library-linux-x86_64
 
@@ -311,7 +311,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
@@ -348,7 +348,7 @@ jobs:
           ls -la target/${{ matrix.target }}/release/
 
       - name: Save library
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: library-${{ matrix.target}}
           path: target/${{ matrix.target }}/release/libindy_vdr.a
@@ -360,10 +360,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Fetch static libraries
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
 
       - name: Debug - List downloaded files
         run: find . -name "*.a" | sort
@@ -381,7 +381,7 @@ jobs:
                                  library-x86_64-apple-ios
 
       - name: Save xcframework
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: indy_vdr.xcframework
           path: ./out
@@ -410,7 +410,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
@@ -431,7 +431,7 @@ jobs:
           cross build --lib --release --target ${{matrix.target}} --package indy-vdr
 
       - name: Save library
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: library-${{matrix.target}}
           path: target/${{ matrix.target }}/release/libindy_vdr.so
@@ -442,7 +442,7 @@ jobs:
     needs: build-android
     steps:
       - name: Fetch libraries
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
 
       - run: |
           sudo mkdir ./libs
@@ -452,7 +452,7 @@ jobs:
           sudo mv library-x86_64-linux-android    ./libs/x86_64
 
       - name: Save Android library
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: android-libraries
           path: ./libs
@@ -479,13 +479,13 @@ jobs:
 
     steps:
       - name: Fetch Android libraries
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: android-libraries
           path: mobile/android/
 
       - name: Fetch iOS Framework
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: indy_vdr.xcframework
           path: mobile/ios/
@@ -529,10 +529,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -542,7 +542,7 @@ jobs:
           pip install setuptools wheel twine auditwheel
 
       - name: Fetch library artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: library-${{ matrix.architecture }}
           path: wrappers/python/indy_vdr/
@@ -568,7 +568,7 @@ jobs:
           grep -q manylinux_2_17_ auditwheel.log
 
       - name: Upload python package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: python-${{ matrix.architecture }}
           path: wrappers/python/dist/*
