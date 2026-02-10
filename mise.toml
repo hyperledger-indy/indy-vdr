@@ -1,0 +1,21 @@
+# =============================================================================
+# mise.toml — Tool version management (https://mise.jdx.dev)
+# =============================================================================
+# Manages Node.js, Python, and Go versions for wrapper development.
+# Rust is managed separately via rust-toolchain.toml (stable) and
+# versions.env (nightly for cross-compilation).
+#
+# Usage:
+#   mise install        # Install all tools
+#   mise activate       # Activate in current shell
+#   mise exec -- <cmd>  # Run a command with mise-managed tools
+# =============================================================================
+
+[tools]
+node = "20"        # JavaScript wrapper (wrappers/javascript/)
+python = "3.11"    # Python wrapper (wrappers/python/)
+go = "1.21"        # Go wrapper (wrappers/golang/)
+
+[env]
+# Load build version config (shared with CI and devcontainer)
+_.file = "versions.env"

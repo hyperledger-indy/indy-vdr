@@ -1,0 +1,67 @@
+// Indy VDR Development Container
+// See .devcontainer/Dockerfile for the full build environment.
+// Tool versions: mise.toml (Node/Python/Go), rust-toolchain.toml (Rust stable),
+//                versions.env (Rust nightly, cross, Android linkers).
+{
+  "name": "Indy VDR Development",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "options": ["--platform=linux/amd64"]
+  },
+
+  // Force x86_64 so tools like `cross` (which assume an x86_64 host) work correctly.
+  // On Apple Silicon, Docker Desktop uses Rosetta 2 for emulation.
+  "runArgs": ["--platform=linux/amd64"],
+
+  // Named volumes for large directories — keeps build artifacts and Docker-in-Docker
+  // images off the overlay filesystem (which has a fixed size, typically 59 GB).
+  // Without these, `cross` Android builds (~5 GB per target image) easily fill the disk.
+  "mounts": [
+    "source=indy-vdr-target,target=${containerWorkspaceFolder}/target,type=volume",
+    "source=indy-vdr-docker,target=/var/lib/docker,type=volume"
+  ],
+
+  // Docker-in-Docker is required for the `cross` tool (Android / Linux cross-compilation)
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "vadimcn.vscode-lldb",
+        "fill-labs.dependi",
+        "ms-python.python",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "golang.go"
+      ],
+      "settings": {
+        "rust-analyzer.check.command": "clippy",
+        "[rust]": {
+          "editor.defaultFormatter": "rust-lang.rust-analyzer",
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  },
+
+  // Indy node pool ports (used by ci/test.sh for integration tests)
+  "forwardPorts": [9701, 9702, 9703, 9704, 9705, 9706, 9707, 9708],
+
+  "remoteEnv": {
+    "CARGO_NET_GIT_FETCH_WITH_CLI": "true"
+  },
+
+  // On first container creation: trust mise config and ensure tools are installed
+  // from the workspace's mise.toml (which may differ from what was baked into the image).
+  "postCreateCommand": "mise trust && mise install && mise reshim && echo '✓ Development environment ready'",
+
+  "remoteUser": "vscode"
+}
