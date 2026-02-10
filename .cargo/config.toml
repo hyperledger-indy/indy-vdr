@@ -4,23 +4,26 @@ MACOSX_DEPLOYMENT_TARGET = "14.0"
 IPHONEOS_DEPLOYMENT_TARGET = "12.0"
 CMAKE_OSX_DEPLOYMENT_TARGET = "12.0"
 
+[build]
+# For host (build tools like proc-macros), use the system compiler
+# This prevents cross-compilation when building for the host
+
+[target.aarch64-unknown-linux-gnu]
+# Host target - use system linker via wrapper, not Android NDK
+linker = "/workspaces/indy-vdr/host-cc.sh"
+
 [target.aarch64-linux-android]
+linker = "aarch64-linux-android21-clang"
 rustflags = ["-C", "link-arg=-Wl,-z,max-page-size=16384"]
 
 [target.armv7-linux-androideabi]
+linker = "armv7a-linux-androideabi21-clang"
 rustflags = ["-C", "link-arg=-Wl,-z,max-page-size=16384"]
 
 [target.i686-linux-android]
+linker = "i686-linux-android21-clang"
 rustflags = ["-C", "link-arg=-Wl,-z,max-page-size=16384"]
 
 [target.x86_64-linux-android]
+linker = "x86_64-linux-android21-clang"
 rustflags = ["-C", "link-arg=-Wl,-z,max-page-size=16384"]
-
-[target.aarch64-apple-ios]
-rustflags = ["-C", "link-arg=-lSystem"]
-
-[target.aarch64-apple-ios-sim]
-rustflags = ["-C", "link-arg=-lSystem"]
-
-[target.x86_64-apple-ios]
-rustflags = ["-C", "link-arg=-lSystem"]
