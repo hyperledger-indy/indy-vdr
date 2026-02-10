@@ -1,8 +1,8 @@
 name: "Indy-VDR"
 
-env:
-  RUST_VERSION: "1.85.0"
-  CROSS_VERSION: "0.2.5"
+# Build versions (Rust, cross, Android linkers) are defined in
+# versions.env at the repo root — the single source of truth.
+# Each job loads them with:  grep -vE '^\s*(#|$)' versions.env >> "$GITHUB_ENV"
 
 on:
   push:
@@ -49,6 +49,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Load build config
+        shell: bash
+        run: grep -vE '^\s*(#|$)' versions.env >> "$GITHUB_ENV"
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -62,10 +66,10 @@ jobs:
           cache-on-failure: true
 
       - name: Cargo check
-        run: cargo check
+        run: cargo check --locked
 
       - name: Cargo check TLS support
-        run: cargo check --package indy-vdr-proxy --features tls
+        run: cargo check --locked --package indy-vdr-proxy --features tls
 
       - name: Cargo fmt
         run: cargo fmt --all -- --check
@@ -83,6 +87,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Load build config
+        run: grep -vE '^\s*(#|$)' versions.env >> "$GITHUB_ENV"
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -95,14 +102,14 @@ jobs:
           save-if: false
 
       - name: Debug build
-        run: cargo build --manifest-path libindy_vdr/Cargo.toml
+        run: cargo build --locked --manifest-path libindy_vdr/Cargo.toml
 
       - name: Run local node pool
         run: |
           ./ci/test.sh up
 
       - name: Run tests
-        run: cargo test --manifest-path libindy_vdr/Cargo.toml --features local_nodes_pool
+        run: cargo test --locked --manifest-path libindy_vdr/Cargo.toml --features local_nodes_pool
 
       - name: Stop local node pool
         run: |
@@ -143,6 +150,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Load build config
+        shell: bash
+        run: grep -vE '^\s*(#|$)' versions.env >> "$GITHUB_ENV"
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -158,7 +169,7 @@ jobs:
         name: Build (cross)
         run: |
           cargo install --bins --git https://github.com/rust-embedded/cross --locked --tag v${{ env.CROSS_VERSION }} cross
-          cross build --lib --release --target ${{ matrix.target }}
+          cross build --lib --release --target ${{ matrix.target }} -vv
 
       - if: ${{ !matrix.use_cross && matrix.architecture == 'darwin-universal' }}
         name: Build (mac)
@@ -169,7 +180,7 @@ jobs:
       - if: ${{ !matrix.use_cross && matrix.architecture != 'darwin-universal' }}
         name: Build (standard)
         run: |
-          cargo build --lib --release --target ${{ matrix.target }}
+          cargo build --locked --lib --release --target ${{ matrix.target }} -vv
 
       - name: Upload library artifacts
         uses: actions/upload-artifact@v6
@@ -313,6 +324,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Load build config
+        run: grep -vE '^\s*(#|$)' versions.env >> "$GITHUB_ENV"
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -341,7 +355,7 @@ jobs:
           # Force ZMQ to use the correct compiler for iOS
           export CC=$(xcrun --find clang)
           export CXX=$(xcrun --find clang++)
-          cargo build --lib --release --target ${{ matrix.target }} --package indy-vdr
+          cargo build --locked --lib --release --target ${{ matrix.target }} --package indy-vdr
 
       - name: List files in target
         run: |
@@ -412,6 +426,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Load build config
+        run: grep -vE '^\s*(#|$)' versions.env >> "$GITHUB_ENV"
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -426,10 +443,49 @@ jobs:
 
       - name: Build
         run: |
-          cargo install --bins --git https://github.com/rust-embedded/cross --locked --tag v${{ env.CROSS_VERSION }} cross
-          # Using default Cross images since custom ones were removed from Cross.toml
-          cross build --lib --release --target ${{matrix.target}} --package indy-vdr
+          # The cross Docker images bake in CROSS_CMAKE_OBJECT_FLAGS with
+          # --target triples that lack an API level suffix. Without a suffix,
+          # clang defines __ANDROID_API_FUTURE__ and exposes symbols like
+          # pthread_cond_clockwait (API 30+) that crash on older devices.
+          #
+          # We fix this at two layers:
+          #   1. CROSS_CMAKE_OBJECT_FLAGS — overrides the toolchain.cmake CACHE
+          #      (helps non-cmake-rs cmake builds).
+          #   2. CFLAGS / CXXFLAGS — the cc crate appends these to compiler
+          #      flags, and cmake-rs forwards them via -DCMAKE_C_FLAGS which
+          #      takes precedence over the toolchain CACHE.
+          # In both cases the last --target= wins in clang.
+          case "${{ matrix.target }}" in
+            aarch64-linux-android)    clang_target="aarch64-linux-android${CROSS_ANDROID_SDK}" ;;
+            armv7-linux-androideabi)  clang_target="armv7a-linux-androideabi${CROSS_ANDROID_SDK}" ;;
+            i686-linux-android)       clang_target="i686-linux-android${CROSS_ANDROID_SDK}" ;;
+            x86_64-linux-android)     clang_target="x86_64-linux-android${CROSS_ANDROID_SDK}" ;;
+          esac
+          export CROSS_CMAKE_OBJECT_FLAGS="--target=${clang_target} -DANDROID -ffunction-sections -fdata-sections -fPIC"
+          export CFLAGS="--target=${clang_target}"
+          export CXXFLAGS="--target=${clang_target}"
 
+          cargo install --bins --git https://github.com/rust-embedded/cross --locked --tag v${{ env.CROSS_VERSION }} cross
+          cross build --locked --lib --release --target ${{ matrix.target }} --package indy-vdr -vv
+
+      - name: Validate NDK API level (21)
+        shell: bash
+        run: |
+          lib_path="target/${{ matrix.target }}/release/libindy_vdr.so"
+          sdk_note=$(readelf -n "$lib_path" | awk '/Android/ {in_note=1} in_note && /description data:/ {print; exit}')
+          echo "$sdk_note" 
+          if readelf -Ws "$lib_path" | grep -q "pthread_cond_clockwait"; then
+            echo "Found pthread_cond_clockwait in $lib_path (requires API 30+)"
+            readelf -Ws "$lib_path" | grep "pthread_cond_clockwait"
+            exit 1
+          fi
+
+          if ! echo "$sdk_note" | grep -q "description data: 15 00 00 00"; then
+            echo "Expected Android SDK version 21 in $lib_path (.note.android.ident)"
+            readelf -n "$lib_path"
+            exit 1
+          fi
+      
       - name: Save library
         uses: actions/upload-artifact@v6
         with:
