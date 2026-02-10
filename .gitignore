@@ -1,4 +1,3 @@
-Cargo.lock
 target
 node_modules
 .idea
@@ -14,3 +13,5 @@ coverage
 .npmrc
 github
 **/networks
+android-libraries.tar.gz
+NOTES.md
