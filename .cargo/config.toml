@@ -4,10 +4,6 @@ MACOSX_DEPLOYMENT_TARGET = "14.0"
 IPHONEOS_DEPLOYMENT_TARGET = "12.0"
 CMAKE_OSX_DEPLOYMENT_TARGET = "12.0"
 
-[build]
-# For host (build tools like proc-macros), use the system compiler
-# This prevents cross-compilation when building for the host
-
 [target.aarch64-unknown-linux-gnu]
 # Host target - use system linker via wrapper, not Android NDK
 linker = "/workspaces/indy-vdr/host-cc.sh"
