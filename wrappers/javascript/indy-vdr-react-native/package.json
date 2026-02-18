@@ -1,6 +1,6 @@
 {
   "name": "@hyperledger/indy-vdr-react-native",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "license": "Apache-2.0",
   "description": "React Native wrapper for Indy Vdr",
   "source": "src/index",
@@ -41,7 +41,7 @@
     "install": "node scripts/install.js"
   },
   "dependencies": {
-    "@hyperledger/indy-vdr-shared": "0.2.3"
+    "@hyperledger/indy-vdr-shared": "0.2.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
@@ -56,7 +56,7 @@
     "react-native": ">= 0.71"
   },
   "binary": {
-    "version": "v0.4.4",
+    "version": "v0.4.5",
     "host": "https://github.com/hyperledger-indy/indy-vdr/releases/download",
     "packageName": "library-ios-android.tar.gz"
   }
