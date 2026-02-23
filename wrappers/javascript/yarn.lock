@@ -1695,7 +1695,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-typescript": "npm:^7.27.1"
     "@babel/runtime": "npm:^7.12.5"
-    "@hyperledger/indy-vdr-shared": "npm:0.2.3"
+    "@hyperledger/indy-vdr-shared": "npm:0.2.4"
     "@types/jest": "npm:^27.4.1"
     "@types/node": "npm:^20.0.0"
     "@types/ref-array-di": "npm:^1.2.8"
@@ -1715,7 +1715,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@hyperledger/indy-vdr-react-native@workspace:indy-vdr-react-native"
   dependencies:
-    "@hyperledger/indy-vdr-shared": "npm:0.2.3"
+    "@hyperledger/indy-vdr-shared": "npm:0.2.4"
     "@types/react": "npm:^18.2.0"
     prettier: "npm:^3.0.0"
     react: "npm:^18.2.0"
@@ -1728,7 +1728,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@hyperledger/indy-vdr-shared@npm:0.2.3, @hyperledger/indy-vdr-shared@workspace:indy-vdr-shared":
+"@hyperledger/indy-vdr-shared@npm:0.2.4, @hyperledger/indy-vdr-shared@workspace:indy-vdr-shared":
   version: 0.0.0-use.local
   resolution: "@hyperledger/indy-vdr-shared@workspace:indy-vdr-shared"
   dependencies:
