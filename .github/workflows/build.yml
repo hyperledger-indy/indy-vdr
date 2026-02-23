@@ -244,6 +244,9 @@ jobs:
     name: Build and Test JavaScript wrapper
     needs: [build-release]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     defaults:
       run:
         working-directory: wrappers/javascript
@@ -257,6 +260,10 @@ jobs:
         with:
           node-version: 20.x
           registry-url: "https://registry.npmjs.org/"
+
+      - name: Install npm 11
+        run: npm install -g npm@^11
+        working-directory: .
 
       - name: Enable Corepack
         run: corepack enable
@@ -304,13 +311,15 @@ jobs:
           github.event_name == 'release' ||
           (github.event_name == 'workflow_dispatch' && github.event.inputs.publish-javascript-wrapper == 'true')
         run: |
+          # Determine dist-tag based on version (dev versions get alpha tag)
+          DIST_TAG_FLAG=""
           if [[ $(cat lerna.json | grep version | head -1 | grep dev) ]]; then
-            npx lerna publish from-package --no-push --no-private --yes --no-git-tag-version --dist-tag=alpha
-          else
-            npx lerna publish from-package --no-push --no-private --yes --no-git-tag-version
+            DIST_TAG_FLAG="--tag alpha"
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Publish packages in dependency order using npm Trusted Publishing
+          for pkg in indy-vdr-shared indy-vdr-nodejs indy-vdr-react-native; do
+            npm publish --provenance --access public $DIST_TAG_FLAG "./$pkg"
+          done
 
   build-ios:
     name: Build library (iOS)
@@ -485,7 +494,7 @@ jobs:
             readelf -n "$lib_path"
             exit 1
           fi
-      
+
       - name: Save library
         uses: actions/upload-artifact@v6
         with:
