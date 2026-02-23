@@ -972,7 +972,7 @@ dependencies = [
 
 [[package]]
 name = "indy-vdr"
-version = "0.4.5"
+version = "0.4.6"
 dependencies = [
  "base64 0.22.1",
  "bs58",
