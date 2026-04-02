@@ -1,18 +1,18 @@
-import { Callback } from '@2060.io/ffi-napi'
+import * as koffi from "koffi";
+import {
+  FFI_CALLBACK_ID,
+  FFI_ERROR_CODE,
+  FFI_STRING,
+  FFI_VOID,
+} from "./primitives";
 
-import { allocateCallback } from './alloc'
-import { FFI_VOID, FFI_CALLBACK_ID, FFI_ERROR_CODE, FFI_STRING } from './primitives'
+export const FFI_CALLBACK_NO_RESULT = koffi.proto("cb_no_result", FFI_VOID, [
+  FFI_CALLBACK_ID,
+  FFI_ERROR_CODE,
+]);
 
-export type NativeCallback = (id: number, errorCode: number) => void
-export const toNativeCallback = (cb: NativeCallback) => {
-  const nativeCallback = Callback(FFI_VOID, [FFI_CALLBACK_ID, FFI_ERROR_CODE], cb)
-  const id = allocateCallback(nativeCallback)
-  return { nativeCallback, id }
-}
-
-export type NativeCallbackWithResponse = (id: number, errorCode: number, response: string) => void
-export const toNativeCallbackWithResponse = (cb: NativeCallbackWithResponse) => {
-  const nativeCallback = Callback(FFI_VOID, [FFI_CALLBACK_ID, FFI_ERROR_CODE, FFI_STRING], cb)
-  const id = allocateCallback(nativeCallback)
-  return { nativeCallback, id }
-}
+export const FFI_CALLBACK_STRING = koffi.proto("cb_string", FFI_VOID, [
+  FFI_CALLBACK_ID,
+  FFI_ERROR_CODE,
+  FFI_STRING,
+]);

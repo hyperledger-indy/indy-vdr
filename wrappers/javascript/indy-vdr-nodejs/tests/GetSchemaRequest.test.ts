@@ -1,3 +1,4 @@
+import { beforeAll, describe, expect, test } from 'vitest'
 import type { GetSchemaResponse, IndyVdrPool } from '@hyperledger/indy-vdr-nodejs'
 
 import { SCHEMA_ID, setupPool } from './utils'

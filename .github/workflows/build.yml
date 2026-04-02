@@ -183,7 +183,7 @@ jobs:
           cargo build --locked --lib --release --target ${{ matrix.target }} -vv
 
       - name: Upload library artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: library-${{ matrix.architecture }}
           path: target/${{ matrix.target }}/release/${{ matrix.lib }}
@@ -230,7 +230,7 @@ jobs:
           go-version: "^1.16.0"
 
       - name: Fetch library artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: library-linux-x86_64
 
@@ -255,41 +255,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up Node.JS 20.x
         uses: actions/setup-node@v6
         with:
           node-version: 20.x
+          cache: pnpm
+          cache-dependency-path: wrappers/javascript/pnpm-lock.yaml
           registry-url: "https://registry.npmjs.org/"
 
-      - name: Install npm 11
-        run: npm install -g npm@^11
-        working-directory: .
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Set Yarn version to 4
-        run: yarn set version 4.9.2
-
       - name: Fetch library artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: library-linux-x86_64
 
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        run: pnpm build
 
-      - name: Lint
-        run: yarn lint
-
-      - name: Check format
-        run: yarn check-format
+      - name: Check style
+        run: pnpm style:check
 
       - name: Check types
-        run: yarn check-types
+        run: pnpm types:check
 
       - name: Run local node pool
         run: |
@@ -304,13 +296,14 @@ jobs:
         env:
           # binary is downloaded to root of repository
           LIB_INDY_VDR_PATH: ../../../
-        run: yarn test
+        run: pnpm test
 
       - name: Publish JavaScript Wrapper
         if: |
           github.event_name == 'release' ||
           (github.event_name == 'workflow_dispatch' && github.event.inputs.publish-javascript-wrapper == 'true')
         run: |
+          npm install -g npm@^11
           # Determine dist-tag based on version (dev versions get alpha tag)
           DIST_TAG_FLAG=""
           if [[ $(cat lerna.json | grep version | head -1 | grep dev) ]]; then
@@ -371,7 +364,7 @@ jobs:
           ls -la target/${{ matrix.target }}/release/
 
       - name: Save library
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: library-${{ matrix.target}}
           path: target/${{ matrix.target }}/release/libindy_vdr.a
@@ -386,7 +379,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Fetch static libraries
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
 
       - name: Debug - List downloaded files
         run: find . -name "*.a" | sort
@@ -404,12 +397,12 @@ jobs:
                                  library-x86_64-apple-ios
 
       - name: Save xcframework
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: indy_vdr.xcframework
           path: ./out
 
-      - uses: geekyeggo/delete-artifact@v5
+      - uses: geekyeggo/delete-artifact@v6
         with:
           name: |
             library-aarch64-apple-ios
@@ -496,7 +489,7 @@ jobs:
           fi
 
       - name: Save library
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: library-${{matrix.target}}
           path: target/${{ matrix.target }}/release/libindy_vdr.so
@@ -507,7 +500,7 @@ jobs:
     needs: build-android
     steps:
       - name: Fetch libraries
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
 
       - run: |
           sudo mkdir ./libs
@@ -517,12 +510,12 @@ jobs:
           sudo mv library-x86_64-linux-android    ./libs/x86_64
 
       - name: Save Android library
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: android-libraries
           path: ./libs
 
-      - uses: geekyeggo/delete-artifact@v5
+      - uses: geekyeggo/delete-artifact@v6
         with:
           name: |
             library-aarch64-linux-android
@@ -544,13 +537,13 @@ jobs:
 
     steps:
       - name: Fetch Android libraries
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: android-libraries
           path: mobile/android/
 
       - name: Fetch iOS Framework
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: indy_vdr.xcframework
           path: mobile/ios/
@@ -607,7 +600,7 @@ jobs:
           pip install setuptools wheel twine auditwheel
 
       - name: Fetch library artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: library-${{ matrix.architecture }}
           path: wrappers/python/indy_vdr/
@@ -633,7 +626,7 @@ jobs:
           grep -q manylinux_2_17_ auditwheel.log
 
       - name: Upload python package
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: python-${{ matrix.architecture }}
           path: wrappers/python/dist/*

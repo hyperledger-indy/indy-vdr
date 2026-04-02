@@ -1,13 +1,12 @@
-import * as ref from '@2060.io/ref-napi'
-import refArray from 'ref-array-di'
-import refStruct from 'ref-struct-di'
+import koffi from "koffi";
+import { FFI_INT64, FFI_UINT8 } from "./primitives";
 
-const Struct = refStruct(ref)
-const Array = refArray(ref)
+export const ByteBufferStruct = koffi.struct("ByteBuffer", {
+  len: FFI_INT64,
+  data: koffi.pointer(FFI_UINT8),
+});
 
-export const ByteBufferArray = Array(ref.types.uint8)
-
-export const ByteBuffer = Struct({
-  len: ref.types.int64,
-  data: ByteBufferArray,
-})
+export type ByteBufferType = {
+  len: number;
+  data: Uint8Array;
+};

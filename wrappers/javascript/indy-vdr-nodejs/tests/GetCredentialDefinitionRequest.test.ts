@@ -1,3 +1,4 @@
+import { beforeAll, describe, expect, test } from 'vitest'
 import type { GetCredentialDefinitionResponse, IndyVdrPool } from '@hyperledger/indy-vdr-nodejs'
 
 import { CRED_DEF_ID, setupPool } from './utils'
