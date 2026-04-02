@@ -1,6 +1,6 @@
 {
   "name": "@hyperledger/indy-vdr-nodejs",
-  "version": "0.2.4",
+  "version": "0.3.0-dev.0",
   "license": "Apache-2.0",
   "description": "Nodejs wrapper for Indy Vdr",
   "source": "src/index",
@@ -20,34 +20,19 @@
     "scripts"
   ],
   "scripts": {
-    "build": "yarn clean && yarn compile",
+    "types:check": "pnpm compile --noEmit",
+    "build": "pnpm clean && pnpm compile",
     "clean": "rimraf -rf ./build",
-    "compile": "tsc -p tsconfig.build.json",
-    "test": "jest",
+    "compile": "tsc -p ./tsconfig.build.json",
     "install": "node scripts/install.js"
   },
-  "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-typescript": "^7.27.1",
-    "@babel/runtime": "^7.12.5",
-    "@types/jest": "^27.4.1",
-    "@types/node": "^20.0.0",
-    "@types/ref-struct-di": "^1.1.6",
-    "babel-plugin-module-resolver": "^4.0.0",
-    "jest": "^28.0.2",
-    "prettier": "2.6.2",
-    "rimraf": "^6.0.1",
-    "ts-node": "^10.7.0",
-    "typescript": "~4.9.4"
-  },
   "dependencies": {
-    "@2060.io/ffi-napi": "^4.0.9",
-    "@2060.io/ref-napi": "^3.0.6",
-    "@hyperledger/indy-vdr-shared": "0.2.4",
-    "@types/ref-array-di": "^1.2.8",
-    "ref-array-di": "^1.2.2",
-    "ref-struct-di": "^1.1.1"
+    "@hyperledger/indy-vdr-shared": "workspace:*",
+    "koffi": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
   },
   "binary": {
     "version": "v0.4.5",

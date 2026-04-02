@@ -1,6 +1,6 @@
 {
   "name": "@hyperledger/indy-vdr-react-native",
-  "version": "0.2.4",
+  "version": "0.3.0-dev.0",
   "license": "Apache-2.0",
   "description": "React Native wrapper for Indy Vdr",
   "source": "src/index",
@@ -35,21 +35,20 @@
     "package.json"
   ],
   "scripts": {
-    "build": "yarn clean && yarn compile",
+    "types:check": "pnpm compile --noEmit",
+    "build": "pnpm clean && pnpm compile",
     "clean": "rimraf -rf ./build",
-    "compile": "tsc -p tsconfig.build.json",
+    "compile": "tsc -p ./tsconfig.build.json",
     "install": "node scripts/install.js"
   },
   "dependencies": {
-    "@hyperledger/indy-vdr-shared": "0.2.4"
+    "@hyperledger/indy-vdr-shared": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
-    "prettier": "^3.0.0",
     "react": "^18.2.0",
     "react-native": ">= 0.71",
-    "rimraf": "^5.0.0",
-    "typescript": "~5.4.5"
+    "typescript": "catalog:"
   },
   "peerDependencies": {
     "react": ">= 16",

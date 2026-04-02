@@ -1,11 +1,7 @@
-import { ByteBufferArray, ByteBuffer } from './structures'
+import type { ByteBufferType } from "./structures";
 
-export const uint8ArrayToByteBuffer = (typedArray: Buffer) => {
-  const len = typedArray.length
-  const data = new ByteBufferArray(typedArray)
-
-  return ByteBuffer({
-    len,
-    data,
-  })
-}
+export const uint8ArrayToByteBufferStruct = (
+  buffer: Uint8Array = new Uint8Array(0),
+): ByteBufferType => {
+  return { data: buffer, len: buffer.length };
+};

@@ -1,10 +1,11 @@
 {
   "name": "@hyperledger/indy-vdr-shared",
-  "version": "0.2.4",
+  "version": "0.3.0-dev.0",
   "license": "Apache-2.0",
   "description": "Shared library for using Indy VDR with NodeJS and React Native",
   "main": "build/index",
   "source": "src/index",
+  "types": "build/index",
   "homepage": "https://github.com/hyperledger-indy/indy-vdr/tree/main/wrappers/javascript/indy-vdr-shared",
   "repository": {
     "type": "git",
@@ -19,19 +20,15 @@
     "installBinary.js"
   ],
   "scripts": {
-    "build": "yarn run clean && yarn run compile",
+    "types:check": "pnpm compile --noEmit",
+    "build": "pnpm clean && pnpm compile",
     "clean": "rimraf -rf ./build",
-    "compile": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "yarn run build"
+    "compile": "tsc -p ./tsconfig.build.json"
   },
   "dependencies": {
     "tar": "^7.4.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
-    "@babel/runtime": "^7.17.9",
-    "prettier": "^2.6.2",
-    "rimraf": "^3.0.2",
-    "typescript": "~4.9.4"
+    "typescript": "catalog:"
   }
 }

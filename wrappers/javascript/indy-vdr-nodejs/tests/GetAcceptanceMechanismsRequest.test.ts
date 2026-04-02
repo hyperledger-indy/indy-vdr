@@ -1,3 +1,4 @@
+import { beforeAll, describe, expect, test } from 'vitest'
 import type { GetAcceptanceMechanismsResponse, IndyVdrPool } from '@hyperledger/indy-vdr-nodejs'
 
 import { setupPool } from './utils'

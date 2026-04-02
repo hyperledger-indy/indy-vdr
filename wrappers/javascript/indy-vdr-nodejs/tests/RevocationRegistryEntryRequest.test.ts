@@ -1,3 +1,4 @@
+import { beforeAll, describe, expect, test } from 'vitest'
 import type { IndyVdrPool } from '@hyperledger/indy-vdr-nodejs'
 
 import { DID, REVOC_REG_DEF_ID, setupPool } from './utils'
