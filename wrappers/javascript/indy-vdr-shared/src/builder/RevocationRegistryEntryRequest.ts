@@ -1,6 +1,5 @@
-import type { WriteRequestResultTxnBase, WriteRequestResponse } from '../types'
-
-import { indyVdr, IndyVdrRequest } from '../indyVdr'
+import { IndyVdrRequest, indyVdr } from '../indyVdr'
+import type { WriteRequestResponse, WriteRequestResultTxnBase } from '../types'
 
 type ClRevocationRegistryDelta = {
   prevAccum?: string

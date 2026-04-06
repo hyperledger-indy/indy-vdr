@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "paths": {
       "@hyperledger/indy-vdr-nodejs": ["indy-vdr-nodejs/src"],
       "@hyperledger/indy-vdr-react-native": ["indy-vdr-react-native/src"],

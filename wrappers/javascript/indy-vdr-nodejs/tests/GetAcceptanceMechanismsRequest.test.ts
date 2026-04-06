@@ -1,14 +1,14 @@
-import { beforeAll, describe, expect, test } from 'vitest'
 import type { GetAcceptanceMechanismsResponse, IndyVdrPool } from '@hyperledger/indy-vdr-nodejs'
-
-import { setupPool } from './utils'
-
 import { GetAcceptanceMechanismsRequest } from '@hyperledger/indy-vdr-nodejs'
+import { beforeAll, describe, expect, test } from 'vitest'
+import { setupPool } from './utils'
 
 describe('GetAcceptanceMechanismsRequest', () => {
   let pool: IndyVdrPool
 
-  beforeAll(() => (pool = setupPool()))
+  beforeAll(() => {
+    pool = setupPool()
+  })
 
   test('Submit request', async () => {
     const request = new GetAcceptanceMechanismsRequest({})

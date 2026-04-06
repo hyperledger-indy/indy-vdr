@@ -1,6 +1,5 @@
-import type { NativeBindings } from './NativeBindings'
-
 import { NativeModules, Platform } from 'react-native'
+import type { NativeBindings } from './NativeBindings'
 
 declare global {
   const _indy_vdr: NativeBindings
@@ -12,13 +11,15 @@ export const register = (): NativeBindings => {
   let doesIndyVdrExist = false
   try {
     doesIndyVdrExist = Boolean(_indy_vdr)
-  } catch (e) {
+  } catch {
     doesIndyVdrExist = false
   }
 
   // Check if the constructor exists. If not, try installing the JSI bindings.
   if (!doesIndyVdrExist) {
-    const indyVdrModule = NativeModules.IndyVdr as { install: () => boolean } | null
+    const indyVdrModule = NativeModules.IndyVdr as {
+      install: () => boolean
+    } | null
 
     if (indyVdrModule == null) {
       let message = `Failed to create a new ${libraryName}' instance: The native ${libraryName} Module could not be found.'
@@ -43,7 +44,7 @@ export const register = (): NativeBindings => {
         }
       }
 
-      message += `\n* Rebuild the app`
+      message += '\n* Rebuild the app'
 
       throw new Error(message)
     }

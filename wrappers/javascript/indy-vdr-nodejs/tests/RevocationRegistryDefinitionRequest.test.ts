@@ -1,14 +1,14 @@
-import { beforeAll, describe, expect, test } from 'vitest'
 import type { IndyVdrPool } from '@hyperledger/indy-vdr-nodejs'
-
-import { CRED_DEF_ID, DID, setupPool } from './utils'
-
 import { RevocationRegistryDefinitionRequest } from '@hyperledger/indy-vdr-nodejs'
+import { beforeAll, describe, expect, test } from 'vitest'
+import { CRED_DEF_ID, DID, setupPool } from './utils'
 
 describe('RevocationRegistryDefinitionRequest', () => {
   let pool: IndyVdrPool
 
-  beforeAll(() => (pool = setupPool()))
+  beforeAll(() => {
+    pool = setupPool()
+  })
 
   test('Submit request', async () => {
     const request = new RevocationRegistryDefinitionRequest({

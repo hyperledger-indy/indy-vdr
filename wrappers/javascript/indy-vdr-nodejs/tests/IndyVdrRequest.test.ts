@@ -1,9 +1,7 @@
-import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 import type { IndyVdrRequest } from '@hyperledger/indy-vdr-nodejs'
-
-import { DID, SCHEMA_ID } from './utils'
-
 import { GetSchemaRequest } from '@hyperledger/indy-vdr-nodejs'
+import { afterAll, beforeAll, describe, expect, test } from 'vitest'
+import { DID, SCHEMA_ID } from './utils'
 
 describe('IndyVdrRequest', () => {
   let request: IndyVdrRequest

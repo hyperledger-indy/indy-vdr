@@ -20,7 +20,7 @@ function needsDownload({ version, targetDirectory }) {
       console.log('Binary is up to date, skipping download')
       return false
     }
-  } catch (error) {
+  } catch (_error) {
     // If metadata is corrupted, download anyway
     console.log('Metadata file is invalid, will download binary')
   }

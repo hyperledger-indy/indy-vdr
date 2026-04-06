@@ -2,8 +2,7 @@ packages:
   - indy-vdr-*
 
 catalog:
-  "@biomejs/biome": 1.9.4
-  "@changesets/cli": ^2.27.12
+  "@biomejs/biome": 2.4.10
   "@types/node": ^20.12.11
   koffi: ^2.15.1
   rimraf: ^5.0.5

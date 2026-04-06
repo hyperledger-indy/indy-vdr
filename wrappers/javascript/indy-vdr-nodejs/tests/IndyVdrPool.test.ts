@@ -1,9 +1,7 @@
-import { beforeAll, describe, expect, test } from 'vitest'
 import type { IndyVdrPool } from '@hyperledger/indy-vdr-nodejs'
-
-import { genesisTxnPath } from './utils'
-
 import { PoolCreate } from '@hyperledger/indy-vdr-nodejs'
+import { beforeAll, describe, expect, test } from 'vitest'
+import { genesisTxnPath } from './utils'
 
 describe('IndyVdrPool', () => {
   let pool: IndyVdrPool
