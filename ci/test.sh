@@ -12,9 +12,9 @@ help(){
 }
 
 up(){
-  docker build -f ci/indy-pool.dockerfile -t test_pool --build-arg pool_ip=10.0.0.2 ci
-  docker network create --subnet=10.0.0.0/8 indy-sdk-network
-  docker run -d --name indy_pool -p 9701-9708:9701-9708 --net=indy-sdk-network test_pool
+  docker build --platform linux/amd64 -f ci/indy-pool.dockerfile -t test_pool --build-arg pool_ip=10.0.0.2 ci
+  docker network create --subnet=10.0.0.0/8 indy-sdk-network 2>/dev/null || true
+  docker run -d --platform linux/amd64 --name indy_pool -p 9701-9708:9701-9708 --net=indy-sdk-network test_pool
 }
 
 run_tests(){
