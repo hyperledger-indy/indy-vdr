@@ -1,2 +1,2 @@
 // Register indy-vdr
-import "@hyperledger/indy-vdr-nodejs";
+import '@hyperledger/indy-vdr-nodejs'

@@ -1,5 +1,5 @@
-import type { Callback, CallbackWithResponse, ReturnObject } from './serialize'
 import type { Transactions } from '@hyperledger/indy-vdr-shared'
+import type { Callback, CallbackWithResponse, ReturnObject } from './serialize'
 
 export type PoolHandle = number
 export type RequestHandle = number

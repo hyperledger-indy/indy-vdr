@@ -1,6 +1,5 @@
-import type { WriteRequestResultTxnBase, WriteRequestResponse } from '../types'
-
 import { IndyVdrRequest, indyVdr } from '../indyVdr'
+import type { WriteRequestResponse, WriteRequestResultTxnBase } from '../types'
 
 export type AttribRequestOptions = {
   submitterDid: string

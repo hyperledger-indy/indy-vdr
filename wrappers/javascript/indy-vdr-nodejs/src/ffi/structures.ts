@@ -1,12 +1,12 @@
-import koffi from "koffi";
-import { FFI_INT64, FFI_UINT8 } from "./primitives";
+import koffi from 'koffi'
+import { FFI_INT64, FFI_UINT8 } from './primitives'
 
-export const ByteBufferStruct = koffi.struct("ByteBuffer", {
+export const ByteBufferStruct = koffi.struct('ByteBuffer', {
   len: FFI_INT64,
   data: koffi.pointer(FFI_UINT8),
-});
+})
 
 export type ByteBufferType = {
-  len: number;
-  data: Uint8Array;
-};
+  len: number
+  data: Uint8Array
+}

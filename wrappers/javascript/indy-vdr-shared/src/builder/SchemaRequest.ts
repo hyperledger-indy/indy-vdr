@@ -1,6 +1,5 @@
-import type { WriteRequestResponse, WriteRequestResultTxnBase } from '../types'
-
 import { IndyVdrRequest, indyVdr } from '../indyVdr'
+import type { WriteRequestResponse, WriteRequestResultTxnBase } from '../types'
 
 export type SchemaRequestOptions = {
   submitterDid: string

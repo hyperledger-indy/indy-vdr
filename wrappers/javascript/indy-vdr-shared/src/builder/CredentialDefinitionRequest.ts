@@ -1,6 +1,5 @@
+import { IndyVdrRequest, indyVdr } from '../indyVdr'
 import type { WriteRequestResponse, WriteRequestResultTxnBase } from '../types'
-
-import { indyVdr, IndyVdrRequest } from '../indyVdr'
 
 export type CredentialDefinitionRequestOptions = {
   submitterDid: string

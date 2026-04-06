@@ -1,6 +1,5 @@
+import { IndyVdrRequest, indyVdr } from '../indyVdr'
 import type { GetRequestResponse, GetRequestResultFoundBase, GetRequestResultNotFoundBase } from '../types'
-
-import { indyVdr, IndyVdrRequest } from '../indyVdr'
 
 export type GetCredentialDefinitionRequestOptions = {
   submitterDid?: string

@@ -1,3 +1,3 @@
-export const allocateHandle = () => [0] as [number];
+export const allocateHandle = () => [0] as [number]
 
-export const allocateStringBuffer = () => [undefined] as [unknown];
+export const allocateStringBuffer = () => [undefined] as [unknown]

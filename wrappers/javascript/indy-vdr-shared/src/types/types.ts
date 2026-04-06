@@ -147,7 +147,7 @@ export type GetRequestResultFoundBase = {
 
 export type GetRequestResponse<
   FoundResult extends GetRequestResultFoundBase,
-  NotFoundResult extends GetRequestResultNotFoundBase
+  NotFoundResult extends GetRequestResultNotFoundBase,
 > = {
   op: 'REPLY'
   result: FoundResult | NotFoundResult

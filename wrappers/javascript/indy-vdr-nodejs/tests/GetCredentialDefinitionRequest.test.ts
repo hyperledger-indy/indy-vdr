@@ -1,14 +1,14 @@
-import { beforeAll, describe, expect, test } from 'vitest'
 import type { GetCredentialDefinitionResponse, IndyVdrPool } from '@hyperledger/indy-vdr-nodejs'
-
-import { CRED_DEF_ID, setupPool } from './utils'
-
 import { GetCredentialDefinitionRequest } from '@hyperledger/indy-vdr-nodejs'
+import { beforeAll, describe, expect, test } from 'vitest'
+import { CRED_DEF_ID, setupPool } from './utils'
 
 describe('GetCredentialDefinitionRequest', () => {
   let pool: IndyVdrPool
 
-  beforeAll(() => (pool = setupPool()))
+  beforeAll(() => {
+    pool = setupPool()
+  })
 
   test('Submit request', async () => {
     const request = new GetCredentialDefinitionRequest({ credentialDefinitionId: CRED_DEF_ID })

@@ -1,14 +1,14 @@
-import { beforeAll, describe, expect, test } from 'vitest'
 import type { GetRevocationRegistryDeltaResponse, IndyVdrPool } from '@hyperledger/indy-vdr-nodejs'
-
-import { REVOC_REG_DEF_ID, setupPool } from './utils'
-
 import { GetRevocationRegistryDeltaRequest } from '@hyperledger/indy-vdr-nodejs'
+import { beforeAll, describe, expect, test } from 'vitest'
+import { REVOC_REG_DEF_ID, setupPool } from './utils'
 
 describe('GetRevocationRegistryDeltaRequest', () => {
   let pool: IndyVdrPool
 
-  beforeAll(() => (pool = setupPool()))
+  beforeAll(() => {
+    pool = setupPool()
+  })
 
   test('Submit request', async () => {
     const request = new GetRevocationRegistryDeltaRequest({

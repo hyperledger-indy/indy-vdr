@@ -18,13 +18,10 @@
     "clean": "pnpm -r clean",
     "test": "vitest",
     "test:local-build": "LIB_INDY_VDR_PATH=../../../target/release pnpm test",
-    "release": "pnpm build && pnpm changeset publish --no-git-tag",
-    "changeset-version": "pnpm changeset version && pnpm style:fix",
     "set-version": "lerna version --exact --no-git-tag-version --no-push --yes"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
-    "@changesets/cli": "catalog:",
     "@types/node": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",

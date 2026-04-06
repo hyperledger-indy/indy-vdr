@@ -1,5 +1,3 @@
-import type { NativeBindings } from './NativeBindings'
-import type { Callback, CallbackWithResponse, ReturnObject } from './serialize'
 import type {
   AcceptanceMechanismsRequestOptions,
   AttribRequestOptions,
@@ -38,8 +36,9 @@ import type {
   Transactions,
   Verifiers,
 } from '@hyperledger/indy-vdr-shared'
-
 import { handleInvalidNullResponse, IndyVdrError } from '@hyperledger/indy-vdr-shared'
+import type { NativeBindings } from './NativeBindings'
+import type { Callback, CallbackWithResponse, ReturnObject } from './serialize'
 
 import { serializeArguments } from './serialize'
 
@@ -80,7 +79,7 @@ export class ReactNativeIndyVdr implements IndyVdr {
         // this is required to add array brackets, and commas, to an invalid json object that
         //should be a list
         if (typeof value === 'string' && isStream) {
-          const mappedResponse = isStream ? '[' + value.replace(/\n/g, ',') + ']' : value
+          const mappedResponse = isStream ? `[${value.replace(/\n/g, ',')}]` : value
 
           if (mappedResponse.length === 0) return resolve(null)
           resolve(JSON.parse(mappedResponse) as Return)
