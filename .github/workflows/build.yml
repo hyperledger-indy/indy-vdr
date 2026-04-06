@@ -257,6 +257,8 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 10.29.2
 
       - name: Set up Node.JS 20.x
         uses: actions/setup-node@v6
