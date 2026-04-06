@@ -1,10 +1,6 @@
 import { NativeModules, Platform } from 'react-native'
 import type { NativeBindings } from './NativeBindings'
 
-declare global {
-  const _indy_vdr: NativeBindings
-}
-
 export const register = (): NativeBindings => {
   const libraryName = 'indy-vdr'
 
