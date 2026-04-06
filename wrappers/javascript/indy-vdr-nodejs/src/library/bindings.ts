@@ -12,6 +12,7 @@ import {
   FFI_REQUEST_HANDLE,
   FFI_STRING,
   FFI_UINT64,
+  FFI_VOID,
 } from '../ffi'
 
 export const nativeBindings: Record<string, [koffi.TypeSpec, Array<koffi.TypeSpec>]> = {
@@ -20,7 +21,9 @@ export const nativeBindings: Record<string, [koffi.TypeSpec, Array<koffi.TypeSpe
   indy_vdr_set_default_logger: [FFI_ERROR_CODE, []],
   indy_vdr_set_protocol_version: [FFI_ERROR_CODE, [FFI_INT64]],
   indy_vdr_set_socks_proxy: [FFI_ERROR_CODE, [FFI_STRING]],
-  indy_vdr_version: [koffi.pointer(FFI_STRING), []],
+  indy_vdr_set_cache_directory: [FFI_ERROR_CODE, [FFI_STRING]],
+  indy_vdr_version: [FFI_STRING, []],
+  indy_vdr_string_free: [FFI_VOID, [FFI_STRING]],
   indy_vdr_get_current_error: [FFI_ERROR_CODE, [koffi.out(koffi.pointer(FFI_STRING))]],
 
   // cache
