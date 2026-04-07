@@ -323,15 +323,15 @@ jobs:
           github.event_name == 'release' ||
           (github.event_name == 'workflow_dispatch' && github.event.inputs.publish-javascript-wrapper == 'true')
         run: |
-          npm install -g npm@^11
           # Determine dist-tag based on version (dev versions get alpha tag)
           DIST_TAG_FLAG=""
-          if [[ $(cat lerna.json | grep version | head -1 | grep dev) ]]; then
+          if [[ $(grep version lerna.json | head -1 | grep dev) ]]; then
             DIST_TAG_FLAG="--tag alpha"
           fi
-          # Publish packages in dependency order using npm Trusted Publishing
+          # Publish packages in dependency order using pnpm publish, which
+          # automatically replaces workspace:* references with resolved versions
           for pkg in indy-vdr-shared indy-vdr-nodejs indy-vdr-react-native; do
-            npm publish --provenance --access public $DIST_TAG_FLAG "./$pkg"
+            (cd "$pkg" && pnpm publish --provenance --access public --no-git-checks $DIST_TAG_FLAG)
           done
 
   build-ios:

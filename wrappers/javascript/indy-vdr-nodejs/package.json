@@ -1,45 +1,45 @@
 {
-  "name": "@hyperledger/indy-vdr-nodejs",
-  "version": "0.3.0-dev.0",
-  "license": "Apache-2.0",
-  "description": "Nodejs wrapper for Indy Vdr",
-  "source": "src/index",
-  "main": "build/index",
-  "homepage": "https://github.com/hyperledger-indy/indy-vdr/tree/main/wrappers/javascript/indy-vdr-nodejs",
-  "author": "Hyperledger (https://github.com/hyperledger)",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hyperledger-indy/indy-vdr",
-    "directory": "wrappers/javascript/indy-vdr-nodejs"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "build",
-    "scripts"
-  ],
-  "scripts": {
-    "types:check": "pnpm compile --noEmit",
-    "build": "pnpm clean && pnpm compile",
-    "clean": "rimraf -rf ./build",
-    "compile": "tsc -p ./tsconfig.build.json",
-    "install": "node scripts/install.js"
-  },
-  "dependencies": {
-    "@hyperledger/indy-vdr-shared": "workspace:*",
-    "koffi": "catalog:"
-  },
-  "devDependencies": {
-    "@types/node": "catalog:",
-    "typescript": "catalog:"
-  },
-  "binary": {
-    "version": "v0.4.5",
-    "host": "https://github.com/hyperledger-indy/indy-vdr/releases/download",
-    "packageName": "library-{platform}-{arch}.tar.gz"
-  },
-  "engines": {
-    "node": ">= 20"
-  }
+	"name": "@hyperledger/indy-vdr-nodejs",
+	"version": "0.3.0-dev.1",
+	"license": "Apache-2.0",
+	"description": "Nodejs wrapper for Indy Vdr",
+	"source": "src/index",
+	"main": "build/index",
+	"homepage": "https://github.com/hyperledger-indy/indy-vdr/tree/main/wrappers/javascript/indy-vdr-nodejs",
+	"author": "Hyperledger (https://github.com/hyperledger)",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hyperledger-indy/indy-vdr",
+		"directory": "wrappers/javascript/indy-vdr-nodejs"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"build",
+		"scripts"
+	],
+	"scripts": {
+		"types:check": "pnpm compile --noEmit",
+		"build": "pnpm clean && pnpm compile",
+		"clean": "rimraf -rf ./build",
+		"compile": "tsc -p ./tsconfig.build.json",
+		"install": "node scripts/install.js"
+	},
+	"dependencies": {
+		"@hyperledger/indy-vdr-shared": "workspace:*",
+		"koffi": "catalog:"
+	},
+	"devDependencies": {
+		"@types/node": "catalog:",
+		"typescript": "catalog:"
+	},
+	"binary": {
+		"version": "v0.4.5",
+		"host": "https://github.com/hyperledger-indy/indy-vdr/releases/download",
+		"packageName": "library-{platform}-{arch}.tar.gz"
+	},
+	"engines": {
+		"node": ">= 20"
+	}
 }
