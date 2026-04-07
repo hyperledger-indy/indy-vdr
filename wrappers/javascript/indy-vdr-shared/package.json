@@ -1,34 +1,34 @@
 {
-  "name": "@hyperledger/indy-vdr-shared",
-  "version": "0.3.0-dev.0",
-  "license": "Apache-2.0",
-  "description": "Shared library for using Indy VDR with NodeJS and React Native",
-  "main": "build/index",
-  "source": "src/index",
-  "types": "build/index",
-  "homepage": "https://github.com/hyperledger-indy/indy-vdr/tree/main/wrappers/javascript/indy-vdr-shared",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hyperledger-indy/indy-vdr",
-    "directory": "wrappers/javascript/indy-vdr-shared"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "build",
-    "installBinary.js"
-  ],
-  "scripts": {
-    "types:check": "pnpm compile --noEmit",
-    "build": "pnpm clean && pnpm compile",
-    "clean": "rimraf -rf ./build",
-    "compile": "tsc -p ./tsconfig.build.json"
-  },
-  "dependencies": {
-    "tar": "^7.4.3"
-  },
-  "devDependencies": {
-    "typescript": "catalog:"
-  }
+	"name": "@hyperledger/indy-vdr-shared",
+	"version": "0.3.0-dev.1",
+	"license": "Apache-2.0",
+	"description": "Shared library for using Indy VDR with NodeJS and React Native",
+	"main": "build/index",
+	"source": "src/index",
+	"types": "build/index",
+	"homepage": "https://github.com/hyperledger-indy/indy-vdr/tree/main/wrappers/javascript/indy-vdr-shared",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hyperledger-indy/indy-vdr",
+		"directory": "wrappers/javascript/indy-vdr-shared"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"build",
+		"installBinary.js"
+	],
+	"scripts": {
+		"types:check": "pnpm compile --noEmit",
+		"build": "pnpm clean && pnpm compile",
+		"clean": "rimraf -rf ./build",
+		"compile": "tsc -p ./tsconfig.build.json"
+	},
+	"dependencies": {
+		"tar": "^7.4.3"
+	},
+	"devDependencies": {
+		"typescript": "catalog:"
+	}
 }
