@@ -1,7 +1,7 @@
 import koffi from 'koffi'
 import { FFI_INT64, FFI_UINT8 } from './primitives'
 
-export const ByteBufferStruct = koffi.struct('ByteBuffer', {
+export const ByteBufferStruct = koffi.struct('indyvdr_ByteBuffer', {
   len: FFI_INT64,
   data: koffi.pointer(FFI_UINT8),
 })
