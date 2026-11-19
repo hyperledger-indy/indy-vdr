@@ -1,6 +1,7 @@
 extern crate clap;
 use clap::{Arg, ArgAction, Command};
 
+#[derive(Debug)]
 pub struct Config {
     pub genesis: Option<String>,
     pub namespace: String,
@@ -19,6 +20,11 @@ pub struct Config {
 }
 
 pub fn load_config() -> Result<Config, String> {
+    let matches = build_command().get_matches();
+    parse_config(matches)
+}
+
+fn build_command() -> Command {
     const VERSION: &str = env!("CARGO_PKG_VERSION");
 
     #[allow(unused_mut)]
@@ -120,8 +126,10 @@ pub fn load_config() -> Result<Config, String> {
             .action(ArgAction::Help),
     );
 
-    let matches = app.get_matches();
+    app
+}
 
+fn parse_config(matches: clap::ArgMatches) -> Result<Config, String> {
     let genesis = matches.get_one::<String>("genesis").cloned();
 
     let namespace = matches
@@ -181,4 +189,112 @@ pub fn load_config() -> Result<Config, String> {
         cache_size,
         cache_path,
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn parse(args: &[&str]) -> Result<Config, String> {
+        let matches = build_command()
+            .try_get_matches_from(args)
+            .map_err(|e| e.to_string())?;
+        parse_config(matches)
+    }
+
+    #[test]
+    fn parses_minimal_port_config() {
+        let config = parse(&["indy-vdr-proxy", "--port", "8080"]).unwrap();
+        assert_eq!(config.port, Some(8080));
+        assert_eq!(config.host.as_deref(), Some("0.0.0.0"));
+        assert_eq!(config.namespace, "test");
+        assert!(!config.is_multiple);
+        assert!(config.init_refresh);
+        assert_eq!(config.interval_refresh, 120);
+        assert!(!config.cache);
+        assert_eq!(config.cache_size, 1000);
+    }
+
+    #[test]
+    fn requires_port_or_socket() {
+        let err = parse(&["indy-vdr-proxy"]).unwrap_err();
+        assert_eq!(err, "Port number or socket must be specified");
+    }
+
+    #[test]
+    fn rejects_invalid_port() {
+        let err = parse(&["indy-vdr-proxy", "--port", "not-a-port"]).unwrap_err();
+        assert_eq!(err, "Invalid port number");
+    }
+
+    #[test]
+    fn rejects_invalid_refresh_interval() {
+        let err = parse(&[
+            "indy-vdr-proxy",
+            "--port",
+            "8080",
+            "--refresh-interval",
+            "oops",
+        ])
+        .unwrap_err();
+        assert_eq!(err, "Invalid refresh interval");
+    }
+
+    #[test]
+    fn no_refresh_flag_disables_init_refresh() {
+        let config = parse(&["indy-vdr-proxy", "--port", "8080", "--no-refresh"]).unwrap();
+        assert!(!config.init_refresh);
+    }
+
+    #[test]
+    fn parses_cache_options() {
+        let config = parse(&[
+            "indy-vdr-proxy",
+            "--port",
+            "8080",
+            "--use-cache",
+            "--cache-size",
+            "42",
+            "--cache-path",
+            "/tmp/cache",
+        ])
+        .unwrap();
+        assert!(config.cache);
+        assert_eq!(config.cache_size, 42);
+        assert_eq!(config.cache_path.as_deref(), Some("/tmp/cache"));
+    }
+
+    #[test]
+    fn multiple_ledgers_flag_is_parsed() {
+        let config = parse(&["indy-vdr-proxy", "--port", "8080", "--multiple-ledgers"]).unwrap();
+        assert!(config.is_multiple);
+    }
+
+    #[test]
+    #[cfg(unix)]
+    fn socket_and_default_host_are_mutually_exclusive() {
+        let err = parse(&[
+            "indy-vdr-proxy",
+            "--socket",
+            "/tmp/indy-vdr-proxy-test.sock",
+        ])
+        .unwrap_err();
+        assert_eq!(err, "Cannot specify both host and socket");
+    }
+
+    #[test]
+    fn version_flag_is_recognized() {
+        let err = build_command()
+            .try_get_matches_from(["indy-vdr-proxy", "--version"])
+            .unwrap_err();
+        assert_eq!(err.kind(), clap::error::ErrorKind::DisplayVersion);
+    }
+
+    #[test]
+    fn help_flag_is_recognized() {
+        let err = build_command()
+            .try_get_matches_from(["indy-vdr-proxy", "--help"])
+            .unwrap_err();
+        assert_eq!(err.kind(), clap::error::ErrorKind::DisplayHelp);
+    }
 }
