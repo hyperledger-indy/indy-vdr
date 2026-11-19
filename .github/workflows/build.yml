@@ -42,7 +42,7 @@ jobs:
     name: Run checks
     strategy:
       matrix:
-        os: [macos-14, windows-latest, ubuntu-latest]
+        os: [macos-15, windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -134,7 +134,7 @@ jobs:
             # using cross here to build against an older glibc for compatibility
             use_cross: true
           - architecture: darwin-universal
-            os: macos-14
+            os: macos-15
             lib: libindy_vdr.dylib
             target: darwin-universal
             # As of Rust 1.80, aarch64-apple-darwin is stable
@@ -342,7 +342,7 @@ jobs:
   build-ios:
     name: Build library (iOS)
     needs: [checks]
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       matrix:
         target: [aarch64-apple-ios, aarch64-apple-ios-sim, x86_64-apple-ios]
@@ -396,7 +396,7 @@ jobs:
 
   create-ios-xcframework:
     name: Create iOS xcframework
-    runs-on: macos-14
+    runs-on: macos-15
     needs: build-ios
 
     steps:
@@ -601,7 +601,7 @@ jobs:
           - os: ubuntu-latest
             architecture: linux-x86_64
             plat-name: manylinux2014_x86_64
-          - os: macos-14
+          - os: macos-15
             architecture: darwin-universal
             plat-name: macosx_14_0_universal2
           - os: windows-latest
