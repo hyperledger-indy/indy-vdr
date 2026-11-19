@@ -101,15 +101,25 @@ jobs:
           shared-key: deps
           save-if: false
 
+      # The default "zmq_vendored" feature statically links an old bundled
+      # libzmq (4.3.2, via the zeromq-src crate) that SIGSEGVs during
+      # zmq_connect on this runner image (see #388 for the gdb backtrace -
+      # crash is inside libzmq's own ypipe_t::write, not in our code). Tests
+      # don't ship any binary, so link against the system's libzmq instead,
+      # which is current and doesn't carry this bug. Release artifacts
+      # (build-release, build-ios, etc.) are unaffected and keep vendoring.
+      - name: Install system libzmq
+        run: sudo apt-get update && sudo apt-get install -y libzmq3-dev
+
       - name: Debug build
-        run: cargo build --locked --manifest-path libindy_vdr/Cargo.toml
+        run: cargo build --locked --manifest-path libindy_vdr/Cargo.toml --no-default-features --features ffi,log
 
       - name: Run local node pool
         run: |
           ./ci/test.sh up
 
       - name: Run tests
-        run: cargo test --locked --manifest-path libindy_vdr/Cargo.toml --features local_nodes_pool
+        run: cargo test --locked --manifest-path libindy_vdr/Cargo.toml --no-default-features --features ffi,log,local_nodes_pool
 
       - name: Stop local node pool
         run: |
