@@ -39,17 +39,14 @@ use hyper_unix_connector::UnixConnector;
 
 use indy_vdr::pool::cache::{strategy::CacheStrategyTTL, Cache};
 #[cfg(feature = "tls")]
-use rustls_pemfile::{certs, pkcs8_private_keys};
+use rustls_pemfile::{certs, private_key};
 #[cfg(feature = "tls")]
 use tokio::net::TcpListener;
 use tokio::select;
 #[cfg(unix)]
 use tokio::signal::unix::SignalKind;
 #[cfg(feature = "tls")]
-use tokio_rustls::{
-    rustls::{Certificate, PrivateKey, ServerConfig},
-    TlsAcceptor,
-};
+use tokio_rustls::{rustls::ServerConfig, TlsAcceptor};
 
 use indy_vdr::common::error::prelude::*;
 use indy_vdr::config::PoolConfig;
@@ -66,6 +63,11 @@ fn main() {
     });
 
     env_logger::init();
+
+    #[cfg(feature = "tls")]
+    tokio_rustls::rustls::crypto::aws_lc_rs::default_provider()
+        .install_default()
+        .expect("Error installing default TLS crypto provider");
 
     let rt = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
@@ -396,24 +398,19 @@ fn build_tls_config(cert_path: &str, key_path: &str) -> Result<ServerConfig, Str
         File::open(cert_path)
             .map_err(|err| format!("Error opening TLS certificate file: {}", err))?,
     ))
+    .collect::<Result<Vec<_>, _>>()
     .map_err(|err| format!("Error parsing TLS certificate file: {}", err))?;
-    let keys = pkcs8_private_keys(&mut BufReader::new(
+    let key = private_key(&mut BufReader::new(
         File::open(key_path).map_err(|err| format!("Error opening TLS key file: {}", err))?,
     ))
-    .map_err(|err| format!("Error parsing TLS key file: {}", err))?;
+    .map_err(|err| format!("Error parsing TLS key file: {}", err))?
+    .ok_or_else(|| "Error parsing TLS key file: no keys found".to_string())?;
+    if certs.is_empty() {
+        return Err("Error parsing TLS certificate file: no certificates found".to_string());
+    }
     ServerConfig::builder()
-        .with_safe_defaults()
         .with_no_client_auth()
-        .with_single_cert(
-            vec![Certificate(certs.into_iter().next().ok_or_else(|| {
-                "Error parsing TLS certificate file: no certificates found".to_string()
-            })?)],
-            PrivateKey(
-                keys.into_iter()
-                    .next()
-                    .ok_or_else(|| "Error parsing TLS key file: no keys found".to_string())?,
-            ),
-        )
+        .with_single_cert(certs, key)
         .map_err(|err| format!("Error building TLS config: {}", err))
 }
 
