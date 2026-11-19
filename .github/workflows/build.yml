@@ -101,32 +101,25 @@ jobs:
           shared-key: deps
           save-if: false
 
+      # The default "zmq_vendored" feature statically links an old bundled
+      # libzmq (4.3.2, via the zeromq-src crate) that SIGSEGVs during
+      # zmq_connect on this runner image (see #388 for the gdb backtrace -
+      # crash is inside libzmq's own ypipe_t::write, not in our code). Tests
+      # don't ship any binary, so link against the system's libzmq instead,
+      # which is current and doesn't carry this bug. Release artifacts
+      # (build-release, build-ios, etc.) are unaffected and keep vendoring.
+      - name: Install system libzmq
+        run: sudo apt-get update && sudo apt-get install -y libzmq3-dev
+
       - name: Debug build
-        run: cargo build --locked --manifest-path libindy_vdr/Cargo.toml
+        run: cargo build --locked --manifest-path libindy_vdr/Cargo.toml --no-default-features --features ffi,log
 
       - name: Run local node pool
         run: |
           ./ci/test.sh up
 
-      # TEMPORARY diagnostic step for https://github.com/hyperledger-indy/indy-vdr/issues/388 —
-      # capture a native backtrace for the SIGSEGV in tests/acceptance_mechanism.rs since it
-      # cannot be reproduced on non-CI hardware. Remove once the crash is understood/fixed.
-      - name: Debug - capture SIGSEGV backtrace
-        run: |
-          which gdb || sudo apt-get update && sudo apt-get install -y gdb
-          ulimit -c unlimited
-          cargo test --locked --manifest-path libindy_vdr/Cargo.toml --features local_nodes_pool --test acceptance_mechanism --no-run
-          bin=$(find target/debug/deps -maxdepth 1 -type f -name 'acceptance_mechanism-*' -executable | head -n1)
-          echo "Running $bin under gdb..."
-          RUST_BACKTRACE=full gdb -batch \
-            -ex "run --test-threads=1" \
-            -ex "bt full" \
-            -ex "info threads" \
-            -ex "thread apply all bt" \
-            --args "$bin" --test-threads=1
-
       - name: Run tests
-        run: cargo test --locked --manifest-path libindy_vdr/Cargo.toml --features local_nodes_pool
+        run: cargo test --locked --manifest-path libindy_vdr/Cargo.toml --no-default-features --features ffi,log,local_nodes_pool
 
       - name: Stop local node pool
         run: |
